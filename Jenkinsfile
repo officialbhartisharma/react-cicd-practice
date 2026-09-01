@@ -36,7 +36,7 @@ pipeline {
             steps {
                 withCredentials([
                     string(
-                        credentialsId: 'netlify-token-new'
+                        credentialsId: 'netlify-token-new',
                         variable: 'NETLIFY_AUTH_TOKEN'
                     )
                 ]) {
