@@ -2,7 +2,7 @@ name: React CI
 
 on:
   push:
-    branch: [main]
+    branches: [main]
 
 permissions:
   contents: read
@@ -37,16 +37,16 @@ jobs:
         with:
           path: ./dist
 
-    deploy:
-      environment: 
-        name: github-pages
-        url: ${{ steps.deployment.outputs.page_url }}
+  deploy:
+    environment: 
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
-      needs: build
+    needs: build
 
-      runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
 
-      steps:
-        - name: Deploy to Github Pages
-          id: deployment
-          uses: actions/deploy-pages@v4
+    steps:
+      - name: Deploy to Github Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
