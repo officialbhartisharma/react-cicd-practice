@@ -3,8 +3,12 @@ name: React CI
 on:
   push:
     branch: [main]
-  pull_request:
-    branch: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 
 jobs:
   build:
@@ -27,3 +31,22 @@ jobs:
 
       - name: Run Build
         run: npm run build
+
+      - name: Upload production bulid
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+    deploy:
+      environment: 
+        name: github-pages
+        url: ${{ steps.deployment.outputs.page_url }}
+
+      needs: build
+
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: Deploy to Github Pages
+          id: deployment
+          uses: actions/deploy-pages@v4
