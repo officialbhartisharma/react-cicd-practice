@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        NETLIFY_SITE_ID = 'c76497db-a4ee-4a9b-836c-5ad42af39aeb'
+    }
+
     stages {
         
         stage('Checkout') {
@@ -25,6 +29,19 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'npm run build'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                withCredentials([
+                    string(
+                        credentialsId: 'netlify-token-new'
+                        variable: 'NETLIFY_AUTH_TOKEN'
+                    )
+                ]) {
+                    sh 'netlify deploy --prod --dir=dist --site=$NETLIFY_SITE_ID'
+                }
             }
         }
 
